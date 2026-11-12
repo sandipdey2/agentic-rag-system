@@ -47,7 +47,7 @@ Observed in the saved run:
 
 | Query | Tool calls (agent turns) | Answer | Reviewer |
 |---|---|---|---|
-| What is a GAN? | rag_search (2) | GAN fact, paraphrased, plus "that compete against each other" (not in the fact) | grounded (0.72) |
+| What is a GAN? | rag_search (2) | Correct GAN fact, paraphrased | grounded (0.93) |
 | What is 12 * 8 + 5? | safe_calculate (2) | "… is 101." | grounded (0.83) |
 | Explain the Transformer architecture. | rag_search (2) | Correct Transformer fact | grounded (1.00) |
 | In what year was the Transformer introduced, and how many years after 2014 is that? | rag_search + safe_calculate in the same turn (2) | "introduced in 2017, which is 9 years after 2014" (**wrong**: the model computed `2023 - 2014` before it had read the retrieved year; the correct gap is 3) | grounded (0.88) |
@@ -88,7 +88,7 @@ Simplified lexical metrics inspired by RAGAS (Es et al., 2023) were computed on 
 - Answer Relevance: 1.00
 - Context Precision: 1.00
 
-Faithfulness is the share of the answer's content words that appear in the facts returned by `rag_search`. The LLM writes the answer, so the score is not 1.0 by construction (the GAN answer's added phrase lowered it to 0.72), but it measures word reuse rather than truth. Answer Relevance is the share of the query's content words found in the answer; after stop-word removal these queries reduce to the topic name, so the metric saturates. Context Precision is the share of retrieved facts whose topic matches the query. None of the three is independent evidence of correctness.
+Faithfulness is the share of the answer's content words that appear in the facts returned by `rag_search`. The LLM writes the answer, so the score is not 1.0 by construction. In the metrics cell the GAN answer added "that compete against each other", which is not in the fact, and scored 0.72. The same question in the example cell, without that phrase, scored 0.93, so answers vary between calls even at temperature 0. The score measures word reuse rather than truth. Answer Relevance is the share of the query's content words found in the answer; after stop-word removal these queries reduce to the topic name, so the metric saturates. Context Precision is the share of retrieved facts whose topic matches the query. None of the three is independent evidence of correctness.
 
 ### Failures and limitations shown in the run
 
