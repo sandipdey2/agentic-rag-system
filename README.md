@@ -1,7 +1,7 @@
 # Agentic AI System — Multi-Agent with MCP Tool Server
 
 **Project 6 · Capstone**  
-**GitHub:** https://github.com/sandipdey2/agentic-ai-system
+**GitHub:** https://github.com/sandipdey2/agentic-rag-system
 
 Multi-agent workflow with an LLM Orchestrator that routes to specialized agents. Tools are exposed through an MCP-style Tool Server (register, list_tools, call_tool, sanitize). Final answers are the actual tool results.
 
