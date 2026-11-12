@@ -1,0 +1,11 @@
+topic,fact,source
+GAN,"Generative Adversarial Networks were introduced by Goodfellow et al. in 2014 as a framework for generative modeling using a generator and discriminator.",Goodfellow et al. 2014
+VAE,"Variational Autoencoders learn a probabilistic latent space by maximizing a variational lower bound on the data likelihood.",Kingma and Welling 2014
+Transformer,"The Transformer architecture introduced by Vaswani et al. in 2017 relies entirely on attention mechanisms and enables parallel training.",Vaswani et al. 2017
+LSTM,"Long Short-Term Memory networks are a type of RNN designed to capture long-term dependencies and mitigate vanishing gradients.",Hochreiter and Schmidhuber 1997
+RAG,"Retrieval-Augmented Generation combines a parametric language model with a non-parametric memory retrieved from external documents.",Lewis et al. 2020
+LangGraph,"LangGraph is a library for building stateful multi-agent workflows as directed graphs with nodes and conditional edges.",LangChain documentation
+Agent,"An agent is a system that perceives its environment and takes actions to achieve goals often using tools and memory.",Wooldridge 2009
+Titanic,"The Titanic dataset is a classic public benchmark for binary classification of passenger survival.",Kaggle Titanic
+MNIST,"MNIST is a public dataset of 60,000 handwritten digit images commonly used for generative and classification experiments.",LeCun et al.
+Reproducibility,"Reproducible data science requires documenting environments dependencies and version control so results can be independently verified.",Peng 2011
