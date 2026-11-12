@@ -11,14 +11,15 @@ A single gpt-4o-mini agent chooses and calls two tools itself (`bind_tools`) in 
 
 There is no separate Agent Gateway.
 
-## Evaluation (saved notebook run)
+## Evaluation (saved notebook run, Python 3.13.9)
 
 - Held-out accuracy: **5/5 (100%)**: VAE, RAG, arithmetic (69), out-of-scope refusal, MNIST.
-- The Reviewer flagged the RAG answer for an unsupported added sentence (overlap 0.57).
 - Tool-server calls: 4 in the evaluation, 9 in total up to the end of the evaluation cell.
-- Simplified RAGAS-style metrics (3/3 answered; see report for caveats): Faithfulness 0.98, Answer Relevance 1.00, Context Precision 1.00.
-- Observed failure, reported in the notebook and report: on a two-step question the agent called both tools in one turn, computed 2023 − 2014 instead of 2017 − 2014, and the lexical Reviewer still marked the wrong answer grounded (0.88).
-- The previous router-based version scored 4/5 (MNIST refused).
+- Simplified RAGAS-style metrics (3/3 answered; see the report for caveats): Faithfulness 0.91, Answer Relevance 1.00, Context Precision 1.00.
+- Limitations shown in the run:
+  - The Reviewer flagged an unsupported sentence in the RAG answer (overlap 0.57), but the keyword-based evaluation still passed it.
+  - On a two-step question the agent called `rag_search` and `safe_calculate` in the same turn. Its correct `2017 - 2014` came from its own knowledge, not from the retrieved fact, yet the Reviewer still marked it grounded (0.88).
+- The earlier router-based version scored 4/5 (MNIST refused).
 
 ## How to run
 
@@ -39,14 +40,20 @@ Do not hardcode API keys. The notebook reads them from the environment.
 | knowledge_base.csv | Public 10-fact knowledge base |
 | module_summary.md / .pdf | System design report (matches notebook results and code) |
 | architecture_diagram.pdf / .png | Architecture diagram (guardrail, agent–tool loop, Reviewer, state) |
-| requirements.txt | Dependencies |
+| requirements.txt | Pinned dependencies from the notebook's kernel |
 | README.md | This file |
 
 ## Configuration
 
-- **Python.** The saved notebook outputs were produced on Python 3.13.5 (CPython, Linux), with langchain-core 1.8.0, langchain-openai 1.7.4, langgraph 1.2.20, pandas 3.1.1, and scikit-learn 1.9.1. `requirements.txt` lists the pinned dependencies. Jupyter itself is not pinned (`pip install notebook`).
+- **Python.** The saved run used Python 3.13.9 (Anaconda, `/opt/anaconda3/bin/python`). `requirements.txt` pins, among others:
+  - langchain-core 1.7.7, langchain-openai 1.6.0, openai 2.53.0;
+  - langgraph 1.2.20, langgraph-checkpoint 4.3.1, langgraph-prebuilt 1.1.0;
+  - pandas 2.3.3, numpy 2.2.6, scikit-learn 1.7.2, scipy 1.16.3;
+  - pydantic 2.12.4, httpx 0.28.1, tiktoken 0.14.0, ipykernel 6.31.0.
+
+  Jupyter itself is not pinned (`pip install notebook`).
 - **Agent LLM.** gpt-4o-mini, temperature 0, with `bind_tools`, through an OpenAI-compatible endpoint set by `OPENAI_API_BASE` (Vocareum).
 - **Prompt and settings.** The system prompt (persona) is `SYSTEM_PROMPT` in the notebook's agent cell. The loop limit is `MAX_AGENT_TURNS = 4`, and the Reviewer threshold is `GROUNDING_THRESHOLD = 0.6`.
 - **No-key fallback.** Without `OPENAI_API_KEY`, a rule-based tool caller emits the same tool calls so the graph runs. Results can differ, and the saved results use the LLM.
-- **Data.** `knowledge_base.csv` has columns `topic`, `fact`, and `source` (10 rows).
+- **Data.** `knowledge_base.csv` has columns `topic`, `fact`, and `source` (10 rows). No other datasets or configuration files are used.
 - **State.** State exists for one query only; nothing is remembered between queries.
