@@ -33,3 +33,5 @@ If you are on Python 3.13, regenerate `requirements.txt` with `pip freeze > requ
 | architecture_diagram.pdf | Architecture diagram (matches the single-routing graph) |
 | requirements.txt | Dependencies |
 | README.md | This file |
+
+Tested on Python 3.13.9 (Anaconda). Install with: pip install -r requirements.txt
