@@ -35,3 +35,5 @@ If you are on Python 3.13, regenerate `requirements.txt` with `pip freeze > requ
 | README.md | This file |
 
 Tested on Python 3.13.9 (Anaconda). Install with: pip install -r requirements.txt
+
+Tested on Python 3.13.9 (Anaconda). Install with: pip install -r requirements.txt
