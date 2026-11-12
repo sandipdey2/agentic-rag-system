@@ -1,46 +1,50 @@
-# Changes (round 3): aligned with Sandip's Python 3.13.9 re-run
+# Changes (round 4): aligned with Sandip's latest run (Python 3.13.9)
 
-Source of truth: Sandip's re-run notebook (Python 3.13.9, Anaconda) and his regenerated `requirements.txt` (14 pins). Both are kept as he supplied them, except that the final summary markdown cell is rewritten. See `REVIEW_CHECK.md` for the rubric grades.
+Repository: https://github.com/sandipdey2/agentic-rag-system
 
-## Values taken from his run
-- Python 3.13.9 (cell 2).
-- Example cell:
-  - 12 * 8 + 5 → 101, grounded 0.83;
-  - Transformer explanation, grounded 1.00;
-  - two-step Transformer question: `rag_search` and `safe_calculate` in one turn, expression `2017 - 2014`, answer "3 years" (correct), grounded 0.88;
-  - weather refused by the model;
-  - injection blocked by the guardrail;
+## Values from the latest run (the first output of each code cell)
+- **Python:** 3.13.9 Anaconda (`/opt/anaconda3/bin/python`).
+- **Examples:**
+  - GAN: grounded 0.72. The answer added "that compete against each other".
+  - 12 * 8 + 5: 101, grounded 0.83.
+  - Transformer: grounded 1.00.
+  - Two-step Transformer question: **"9 years after 2014"**, using `2023 - 2014`, with rag_search and safe_calculate called in the same turn. Wrong, but grounded 0.88.
+  - Weather: refused by the model.
+  - Injection: blocked by the guardrail.
   - 5 tool-server calls.
-- Evaluation:
-  - 5/5 (100%);
-  - RAG: low grounding 0.57 with warning, still PASS;
-  - 15 + 27 * 2 → 69, 1.00;
-  - France refused;
-  - MNIST 1.00;
-  - 4 tool calls in the evaluation, 9 in total.
-- Metrics: 3/3 answered; Faithfulness 0.91 (VAE 1.00, MNIST 1.00); Answer Relevance 1.00; Context Precision 1.00.
-- **Changed since the box run:** the "9 vs 3 years" failure did not recur (his run computed `2017 - 2014`), and Faithfulness fell from 0.98 to 0.91. The documents no longer present "9 years" as this run's failure. It is mentioned only as an earlier run of the same code.
+- **Evaluation:** 5/5 (100%).
+  - VAE: 1.00.
+  - RAG: 0.57, flagged, but still PASS.
+  - 69: 1.00.
+  - France: refused.
+  - MNIST: 1.00.
+  - Tool-server calls: 4 in the evaluation, 9 in total.
+- **Metrics:** 3/3 answered; Faithfulness 0.91 (GAN 0.72, VAE 1.00, MNIST 1.00); Answer Relevance 1.00; Context Precision 1.00.
 
-## Files
-- **agentic_system.ipynb:** only markdown cell 17 (Notebook Summary) changed. It had stale 3.13.5 values and the old failure; it is now exactly 5 sentences with his values. No code cells and no outputs were changed.
-- **module_summary.md / .pdf:** rewritten with the exact rubric headings:
-  - Overview
-  - System Architecture and Design (including the single-agent justification)
-  - Decision Logic and Behavior
-  - Safety, Reliability, and Transparency
-  - Observed Behavior and Limitations
-  - Ethical and Responsible Use Considerations
-  - Future Improvements
-  - References
+## Changes
+- **agentic_system.ipynb:**
+  - Only markdown cell 16 (Notebook Summary) changed. It had Faithfulness 0.98, now 0.91 with per-query values.
+  - It is exactly 5 sentences and includes the repo link. Cell 0 already had the link.
+  - No code cells or outputs were touched.
+- **module_summary.md / .pdf:**
+  - Kept the exact rubric headings.
+  - Added the GAN row (0.72) and changed the two-step row to the wrong "9 years" answer.
+  - Faithfulness is now broken down per query.
+  - "Wrong answer labelled grounded" is the main failure, and the ethics section is grounded in it plus the RAG 0.57 case.
+  - Removed "3 years" and the "earlier run" wording.
+  - PDF regenerated: 6 pages, diagram embedded.
+- **README.md:** the failure bullet now says "9 years" and Faithfulness has per-query values. Python 3.13.9 and the package versions match `requirements.txt`. The repo link is present.
+- **architecture_diagram.png / .pdf:**
+  - The SVG source has a footer, "Source: https://github.com/sandipdey2/agentic-rag-system".
+  - The PDF subtitle carries the repo link.
+  - The Reviewer bullet now describes this run's wrong answer.
+- **requirements.txt:** Sandip's file, unchanged. It was checked for Python 3.13 wheels and resolves cleanly.
+- **REVIEW_CHECK.md:** rewritten as a strict table.
 
-  All numbers come from his run. The ethics section is grounded in the RAG 0.57 pass and the Transformer 0.88 cases. The four citations are intact. The PDF is regenerated with the diagram embedded (6 pages).
-- **README.md:** Python 3.13.9 (Anaconda), the package versions from his `requirements.txt`, and his run's values. Configuration, data and prompt are documented.
-- **architecture_diagram.pdf:** one bullet changed. It had said the saved run marked a wrong multi-step answer grounded, which is no longer true. The PNG is unchanged (his copy is identical).
-- **requirements.txt:** his file, unchanged.
-- **REVIEW_CHECK.md:** rewritten as a strict rubric table.
+## Checks
+- `consistency_v4.py`: ALL OK. Every number matches across the notebook text, md, pdf (pdftotext), README and diagram PDF.
+- The repo link appears in the notebook, md, pdf, README, diagram PDF/PNG, CHANGES and REVIEW_CHECK.
+- No stale 3.13.5, 0.98, 0.93, "3 years", old package versions, or 4/5.
 
-## Consistency check
-`/workspace/build/consistency_v3.py` reads his run's output streams and checks every number in the notebook markdown, md, pdf text (`pdftotext`) and README. Result: ALL OK. No stale 3.13.5, 0.98, 0.93, 4/5 (80%), or old package versions remain in any document.
-
-## Open issue (blocking for Execution, Organization, and Integrity)
-In notebook cells 12, 14 and 16, the first output stream is left over from the earlier box execution (Python 3.13.5), and his run's output for the first query of each of those cells is missing. The cells therefore show contradictory results. Fix: in JupyterLab or Notebook, use Kernel → Restart Kernel and Clear All Outputs, then Run All, then Save. If any number changes, rerun the consistency check and update the documents. Also consider removing or commenting out the `%pip freeze > requirements.txt` cell, which overwrites the curated 14-pin file on every Run All.
+## Still open
+Cells 11, 13 and 15 contain leftover output streams from the previous run. Fix: clear all outputs before Run All (VS Code: "Clear All Outputs" button; JupyterLab: Kernel → Restart Kernel and Clear All Outputs), or run `jupyter nbconvert --to notebook --execute --inplace agentic_system.ipynb` from a terminal with the key exported. If any number changes, update the documents again.

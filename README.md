@@ -15,10 +15,10 @@ There is no separate Agent Gateway.
 
 - Held-out accuracy: **5/5 (100%)**: VAE, RAG, arithmetic (69), out-of-scope refusal, MNIST.
 - Tool-server calls: 4 in the evaluation, 9 in total up to the end of the evaluation cell.
-- Simplified RAGAS-style metrics (3/3 answered; see the report for caveats): Faithfulness 0.91, Answer Relevance 1.00, Context Precision 1.00.
+- Simplified RAGAS-style metrics (3/3 answered; see the report for caveats): Faithfulness 0.91 (GAN 0.72, VAE 1.00, MNIST 1.00), Answer Relevance 1.00, Context Precision 1.00.
 - Limitations shown in the run:
   - The Reviewer flagged an unsupported sentence in the RAG answer (overlap 0.57), but the keyword-based evaluation still passed it.
-  - On a two-step question the agent called `rag_search` and `safe_calculate` in the same turn. Its correct `2017 - 2014` came from its own knowledge, not from the retrieved fact, yet the Reviewer still marked it grounded (0.88).
+  - On a two-step question the agent called `rag_search` and `safe_calculate` in the same turn, computed `2023 - 2014` before reading the retrieved year, and answered "9 years after 2014" (correct: 3). The Reviewer still marked the wrong answer grounded (0.88).
 - The earlier router-based version scored 4/5 (MNIST refused).
 
 ## How to run
